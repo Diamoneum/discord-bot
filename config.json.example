@@ -1,0 +1,38 @@
+{
+  "databaseFile": "PleBot.db",
+  "logLevel": 2,
+  "botToken": "{BOT_TOKEN}",
+  "botPrefix": "!",
+  "botMessageCache": 100000000,
+  "coinName": "Plenteum",
+  "coinSymbol": "PLE",
+  "coinUnits": 100000000,
+  "coinAddressLength": 98,
+  "coinAddressPrefix": "PLe",
+  "tipFee": 0.1,
+  "tipMixin": 0,
+  "tipSuccessReact": ":thumbsup:",
+  "tipFailedReact": ":thumbsdown:",
+  "tipLowBalanceReact": ":hourglass:",
+  "tipJoinReact": ":smiley:",
+  "tipCustomReacts": {
+    ":kev:": 99.5,
+    ":99:": 99,
+    "🍆": 1234.56
+  },
+  "faucetHost": "https://faucet.trtl.me/",
+  "faucetEndpoint": "https://faucet.trtl.me/balance",
+  "faucetAddress": "TRTLv2oecJvd3299JPv78BMEqCeQAMtdoB85r1d5dfVFeGG7f83LB58i4gxsthLtWpD2QijVTmgbHhhC1QvJ2ABRea4VedLmqX8",
+  "marketSource": "TradeOgre",
+  "marketEndpoint": "https://tradeogre.com/api/v1/ticker/BTC-TRTL",
+  "marketBTCEndpoint": "https://www.bitstamp.net/api/ticker/",
+  "marketDisallowedServers": [
+    388915017187328002
+  ],
+  "daemonHost": "127.0.0.1",
+  "daemonPort": 44016,
+  "walletHost": "127.0.0.1",
+  "walletPort": 8070,
+  "walletRpcPassword": "12345",
+  "walletUpdateDelay": 500
+}
