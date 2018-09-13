@@ -13,7 +13,7 @@ namespace PlenteumBot
             decimal Hashrate = 0;
             JObject Result = Request.RPC(PlenteumBot.daemonHost, PlenteumBot.daemonPort, "getlastblockheader");
             if (Result.Count > 0 && !Result.ContainsKey("error"))
-                Hashrate = (decimal)Result["block_header"]["difficulty"] / 30;
+                Hashrate = (decimal)Result["block_header"]["difficulty"] / 120;
 
             // Send reply
             await ReplyAsync("The current global hashrate is **" + PlenteumBot.FormatHashrate(Hashrate) + "**");

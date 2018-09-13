@@ -21,7 +21,7 @@ namespace PlenteumBot
             if (Result.Count < 1 || Result.ContainsKey("error")) return 0;
 
             // Return current supply
-            return (decimal)Result["block"]["alreadyGeneratedCoins"] / 100;
+            return (decimal)Result["block"]["alreadyGeneratedCoins"] / 100000000;
         }
 
         // Gets the bot's wallet address
