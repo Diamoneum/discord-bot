@@ -33,7 +33,7 @@ namespace PlenteumBot
         // Bot Variables
         public static string
             botToken = "0",
-            botPrefix = ".";
+            botPrefix = "!";
         public static int
             botMessageCache = 0;
 
@@ -45,7 +45,7 @@ namespace PlenteumBot
         public static decimal
             coinUnits = 100;
         public static int
-            coinAddressLength = 99;
+            coinAddressLength = 98;
 
         // Tipping Variables
         public static decimal
@@ -79,7 +79,7 @@ namespace PlenteumBot
         public static string
             daemonHost = "127.0.0.1";
         public static int
-            daemonPort = 11898;
+            daemonPort = 44016;
 
         // Wallet Variables
         public static string
