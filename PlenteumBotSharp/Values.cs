@@ -54,10 +54,10 @@ namespace PlenteumBot
             tipMixin = 3;
         public static string
             tipDefaultAddress = "",
-            tipSuccessReact = ":thumbsup:",
-            tipFailedReact = ":thumbsdown:",
-            tipLowBalanceReact = ":hourglass:",
-            tipJoinReact = ":smiley:";
+            tipSuccessReact = "👍",
+            tipFailedReact = "👎",
+            tipLowBalanceReact = "❗",
+            tipJoinReact = "👌";
         public static List<string>
             tipAddresses = new List<string>();
         public static Dictionary<string, decimal>
