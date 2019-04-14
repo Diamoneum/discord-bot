@@ -42,6 +42,13 @@ namespace PlenteumBot
             SqliteCommand SyncTableDefaultCommand = new SqliteCommand("INSERT INTO sync(height) SELECT 1 WHERE NOT EXISTS(SELECT 1 FROM sync WHERE height > 0)", Database);
             SyncTableDefaultCommand.ExecuteNonQuery();
 
+            //Mining Incentive Competition Tables
+            SqliteCommand CompTableCreationCommand = new SqliteCommand("CREATE TABLE IF NOT EXISTS comp (lastdat TIMESTAMP, winner INT, amount BIGINT)", Database);
+            CompTableCreationCommand.ExecuteNonQuery();
+
+            SqliteCommand CompEntrantsTableCreationCommand = new SqliteCommand("CREATE TABLE IF NOT EXISTS compentrants (uid INT, address TEXT, createdat TIMESTAMP)", Database);
+            CompEntrantsTableCreationCommand.ExecuteNonQuery();
+
             // Completed
             return Task.CompletedTask;
         }

@@ -15,14 +15,6 @@ namespace PlenteumBot
             Response.WithTitle("Help");
             string Output = "";
 
-            // Requesting additional help
-            //if (Remainder.ToLower() == "faucet")
-            //{
-            //    Response.Title += string.Format(" - {0}faucet", PlenteumBot.botPrefix);
-            //    Response.AddField("Usage:", string.Format("{0}faucet", PlenteumBot.botPrefix));
-            //    Response.AddField("Description:", "Gives faucet information, including the donation address, a link to the faucet, and how much it has left");
-            //}
-            //else 
             if (Remainder.ToLower() == "hashrate")
             {
                 Response.Title += string.Format(" - {0}hashrate", PlenteumBot.botPrefix);
@@ -100,18 +92,32 @@ namespace PlenteumBot
                     "(default) or redirected into your tip jar balance");
             }
 
-            else if (Remainder.ToLower() == "price" && (Context.Guild == null || !PlenteumBot.marketDisallowedServers.Contains(Context.Guild.Id)))
+            else if (Remainder.ToLower() == "price" && (Context.Guild == null && PlenteumBot.marketAllowedChannels.Contains(Context.Guild.Id)))
             {
                 Response.Title += string.Format(" - {0}price", PlenteumBot.botPrefix);
                 Response.AddField("Usage:", string.Format("{0}price", PlenteumBot.botPrefix));
                 Response.AddField("Description:", string.Format("Gives the current price of {0} in USD and BTC", PlenteumBot.coinSymbol));
             }
-            else if (Remainder.ToLower() == "mcap" && (Context.Guild == null || !PlenteumBot.marketDisallowedServers.Contains(Context.Guild.Id)))
+            else if (Remainder.ToLower() == "mcap" && (Context.Guild == null && PlenteumBot.marketAllowedChannels.Contains(Context.Guild.Id)))
             {
                 Response.Title += string.Format(" - {0}mcap", PlenteumBot.botPrefix);
                 Response.AddField("Usage:", string.Format("{0}mcap", PlenteumBot.botPrefix));
                 Response.AddField("Description:", string.Format("Gives {0}'s current market capitalization", PlenteumBot.coinSymbol));
             }
+            //competition related commands
+            else if (Remainder.ToLower() == "enterpromo")
+            {
+                Response.Title += string.Format(" - {0}enterpromo", PlenteumBot.botPrefix);
+                Response.AddField("Usage:", string.Format("{0}enterpromo <{1} Address>", PlenteumBot.botPrefix, PlenteumBot.coinSymbol));
+                Response.AddField("Description:", "Registers your address with the bot so you are eligable to win...");
+            }
+            else if (Remainder.ToLower() == "promopools")
+            {
+                Response.Title += string.Format(" - {0}promopools", PlenteumBot.botPrefix);
+                Response.AddField("Usage:", string.Format("{0}promopools", PlenteumBot.botPrefix));
+                Response.AddField("Description:", "Displays a list of pools participating in the current promo");
+            }
+
 
             // No requested command
             else
@@ -139,6 +145,11 @@ namespace PlenteumBot
                 Output += "  balance\tGives your current tip jar balance\n";
                 Output += "  tip\tTips one or more users a specified amount\n";
                 Output += "  redirecttips\tSets whether you'd like tips sent directly to your wallet or redirected back into your tip jar";
+                //promotional items
+                Output += "Mining Promo:\n";
+                Output += "  enterpromo\tRegisters your wallet for the mining promotion\n";
+                Output += "  promopools\tLists the pools participating in the mining promotion\n";
+                Output += "  promowinners\tLists todays winners in the mining promotion.\n";
                 Output = string.Format("```" + PlenteumBot.Prettify(Output) + "```**Note:** You can use *{0}help <Name of Command>* for " +
                     "additional help with any command", PlenteumBot.botPrefix);
                 Response.WithDescription(Output);

@@ -34,16 +34,21 @@ namespace PlenteumBot
                 //faucetHost = (string)Config["faucetHost"];
                 //faucetEndpoint = (string)Config["faucetEndpoint"];
                 //faucetAddress = (string)Config["faucetAddress"];
-                //marketSource = (string)Config["marketSource"];
-                //marketEndpoint = (string)Config["marketEndpoint"];
-                //marketBTCEndpoint = (string)Config["marketBTCEndpoint"];
-                marketDisallowedServers = Config["marketDisallowedServers"].ToObject<List<ulong>>();
+                marketSource = (string)Config["marketSource"];
+                bookEndpoint = (string)Config["bookEndpoint"];
+                marketEndpoint = (string)Config["marketEndpoint"];
+                marketBTCEndpoint = (string)Config["marketBTCEndpoint"];
+                marketAllowedChannels = Config["marketAllowedChannels"].ToObject<List<ulong>>();
                 daemonHost = (string)Config["daemonHost"];
                 daemonPort = (int)Config["daemonPort"];
                 walletHost = (string)Config["walletHost"];
                 walletPort = (int)Config["walletPort"];
                 walletRpcPassword = (string)Config["walletRpcPassword"];
                 walletUpdateDelay = (int)Config["walletUpdateDelay"];
+                //mining incentive competition
+                pools = (string)Config["pools"];
+                shareDelaySeconds = (int)Config["shareDelaySeconds"];
+
             }
         }
 

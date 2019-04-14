@@ -17,6 +17,18 @@ namespace PlenteumBot
             return false;
         }
 
+        public static bool CheckUserEntered(ulong UID)
+        {
+            // Create Sql command
+            SqliteCommand Command = new SqliteCommand("SELECT uid FROM compentrants WHERE uid = @uid", Database);
+            Command.Parameters.AddWithValue("uid", UID);
+
+            // Execute command
+            using (SqliteDataReader Reader = Command.ExecuteReader())
+                if (Reader.HasRows) return true;
+            return false;
+        }
+
         // Checks if a user exists in the database
         public static bool CheckUserExists(string PaymentId)
         {
@@ -205,5 +217,26 @@ namespace PlenteumBot
             // Execute command
             Command.ExecuteNonQuery();
         }
+
+        #region Mining Competion
+        public static string RegisterEntrant(ulong UID, string Address)
+        {
+            // Generate a new payment ID
+            string PaymentId = GeneratePaymentId(Address);
+
+            // Create Sql command
+            SqliteCommand Command = new SqliteCommand("INSERT INTO compentrants (uid) VALUES (@uid)", Database);
+            Command.Parameters.AddWithValue("uid", UID);
+            Command.Parameters.AddWithValue("address", Address);
+            Command.Parameters.AddWithValue("paymentid", PaymentId.ToUpper());
+
+            // Execute command
+            Command.ExecuteNonQuery();
+
+            // Return generated payment ID
+            return PaymentId;
+        }
+        #endregion
+
     }
 }
