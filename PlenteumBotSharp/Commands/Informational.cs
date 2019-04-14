@@ -92,17 +92,23 @@ namespace PlenteumBot
                     "(default) or redirected into your tip jar balance");
             }
 
-            else if (Remainder.ToLower() == "price" && (Context.Guild == null && PlenteumBot.marketAllowedChannels.Contains(Context.Guild.Id)))
+            else if (Remainder.ToLower() == "price" && (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Guild.Id)))
             {
                 Response.Title += string.Format(" - {0}price", PlenteumBot.botPrefix);
                 Response.AddField("Usage:", string.Format("{0}price", PlenteumBot.botPrefix));
-                Response.AddField("Description:", string.Format("Gives the current price of {0} in USD and BTC", PlenteumBot.coinSymbol));
+                Response.AddField("Description:", string.Format("Gives the current prices of {0} in BTC from STEX", PlenteumBot.coinSymbol));
             }
-            else if (Remainder.ToLower() == "mcap" && (Context.Guild == null && PlenteumBot.marketAllowedChannels.Contains(Context.Guild.Id)))
+            else if (Remainder.ToLower() == "mcap" && (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Guild.Id)))
             {
                 Response.Title += string.Format(" - {0}mcap", PlenteumBot.botPrefix);
                 Response.AddField("Usage:", string.Format("{0}mcap", PlenteumBot.botPrefix));
                 Response.AddField("Description:", string.Format("Gives {0}'s current market capitalization", PlenteumBot.coinSymbol));
+            }
+            else if (Remainder.ToLower() == "book" && (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Guild.Id)))
+            {
+                Response.Title += string.Format(" - {0}book", PlenteumBot.botPrefix);
+                Response.AddField("Usage:", string.Format("{0}book", PlenteumBot.botPrefix));
+                Response.AddField("Description:", string.Format("Gives {0}'s current order book on STEX", PlenteumBot.coinSymbol));
             }
             //competition related commands
             else if (Remainder.ToLower() == "enterpromo")
@@ -130,12 +136,13 @@ namespace PlenteumBot
                 Output += "  difficulty\tGives current network difficulty\n";
                 Output += "  height\tGives current network height\n";
                 Output += "  supply\tGives current circulating supply\n";
-                //if (Context.Guild == null || !PlenteumBot.marketDisallowedServers.Contains(Context.Guild.Id))
-                //{
-                //    Output += "Market:\n";
-                //    Output += "  price\tGives current price\n";
-                //    Output += "  mcap\tGives current global marketcap\n";
-                //}
+                if (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Guild.Id))
+                {
+                    Output += "Market:\n";
+                    Output += "  price\tGives current price in BTC\n";
+                    Output += "  book\tGives current order book\n";
+                    Output += "  mcap\tGives current global marketcap\n";
+                }
                 Output += "Tipping:\n";
                 Output += "  registerwallet\tRegisters your wallet with the tip bot\n";
                 Output += "  updatewallet\tUpdates your registered wallet\n";
@@ -147,9 +154,9 @@ namespace PlenteumBot
                 Output += "  redirecttips\tSets whether you'd like tips sent directly to your wallet or redirected back into your tip jar";
                 //promotional items
                 Output += "Mining Promo:\n";
-                Output += "  enterpromo\tRegisters your wallet for the mining promotion\n";
-                Output += "  promopools\tLists the pools participating in the mining promotion\n";
-                Output += "  promowinners\tLists todays winners in the mining promotion.\n";
+                Output += "  enter\tRegisters your wallet for the mining promotion\n";
+                Output += "  pools\tLists the pools participating in the mining promotion\n";
+                Output += "  winners\tLists todays winners in the mining promotion.\n";
                 Output = string.Format("```" + PlenteumBot.Prettify(Output) + "```**Note:** You can use *{0}help <Name of Command>* for " +
                     "additional help with any command", PlenteumBot.botPrefix);
                 Response.WithDescription(Output);

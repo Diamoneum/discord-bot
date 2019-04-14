@@ -23,12 +23,12 @@ namespace PlenteumBot
 
             // Begin building a response
             var Response = new EmbedBuilder();
-            Response.WithTitle("Current Price of PLE: " + PlenteumBot.marketSource);
+            Response.WithTitle("Current Price of PLE on " + PlenteumBot.marketSource);
             Response.WithUrl(PlenteumBot.marketEndpoint);
-            Response.AddField("Low", string.Format("{0} PLE", (decimal)CoinPrice["low"]));
-            Response.AddField("Ask", string.Format("{0} PLE", (decimal)CoinPrice["ask"]));
-            Response.AddField("Bid", string.Format("{0} PLE", (decimal)CoinPrice["bid"]));
-            Response.AddField("High", string.Format("{0} PLE", (decimal)CoinPrice["high"]));
+            Response.AddField("Low", string.Format("{0} BTC", (decimal)CoinPrice["low"]));
+            Response.AddField("Ask", string.Format("{0} BTC", (decimal)CoinPrice["ask"]));
+            Response.AddField("Bid", string.Format("{0} BTC", (decimal)CoinPrice["bid"]));
+            Response.AddField("High", string.Format("{0} BTC", (decimal)CoinPrice["high"]));
             Response.AddField("Volume", string.Format("{0:N} BTC", (decimal)CoinPrice["volume"]));
 
 
@@ -63,7 +63,7 @@ namespace PlenteumBot
 
             // Begin building a response
             string Response = string.Format("{0}'s market cap is **{1:c}** USD", PlenteumBot.coinName,
-                (decimal)CoinPrice["ask"] * (decimal)BTCPrice["last"] * PlenteumBot.GetSupply());
+                (decimal)CoinPrice["bid"] * (decimal)BTCPrice["last"] * PlenteumBot.GetSupply());
 
             // Send reply
             if (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Channel.Id))
@@ -91,9 +91,9 @@ namespace PlenteumBot
 
             // Begin building a response
             var Response = new EmbedBuilder();
-            Response.WithTitle("Current PLE Order Book ");
-            Response.AddField("Ask", string.Format("Price: {0} PLE    Amount: {1} PLE   Total: {2} BTC", ((decimal)bid["price"]), ((decimal)bid["amount"]), ((decimal)bid["amount2"])));
-            Response.AddField("Bid", string.Format("Price: {0} PLE    Amount: {1} PLE   Total: {2} BTC", ((decimal)ask["price"]), ((decimal)ask["amount"]), ((decimal)ask["amount2"])));
+            Response.WithTitle("Current Order Book of PLE on " + PlenteumBot.marketSource);
+            Response.AddField("Ask", string.Format("Price: {0} PLE, Amount: {1} PLE, Total: {2} BTC", ((decimal)bid["price"]), ((decimal)bid["amount"]), ((decimal)bid["amount2"])));
+            Response.AddField("Bid", string.Format("Price: {0} PLE, Amount: {1} PLE, Total: {2} BTC", ((decimal)ask["price"]), ((decimal)ask["amount"]), ((decimal)ask["amount2"])));
                         
             // Send reply
             if (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Channel.Id))
