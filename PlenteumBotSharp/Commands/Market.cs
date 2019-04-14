@@ -92,8 +92,9 @@ namespace PlenteumBot
             // Begin building a response
             var Response = new EmbedBuilder();
             Response.WithTitle("Current Order Book of PLE on " + PlenteumBot.marketSource);
-            Response.AddField("Ask", string.Format("Price: {0} PLE, Amount: {1} PLE, Total: {2} BTC", ((decimal)bid["price"]), ((decimal)bid["amount"]), ((decimal)bid["amount2"])));
-            Response.AddField("Bid", string.Format("Price: {0} PLE, Amount: {1} PLE, Total: {2} BTC", ((decimal)ask["price"]), ((decimal)ask["amount"]), ((decimal)ask["amount2"])));
+            Response.WithUrl(PlenteumBot.bookEndpoint);
+            Response.AddField("Ask", string.Format("Price: {0} BTC, Amount: {1} PLE, Total: {2} BTC", ((decimal)bid["price"]), Math.Round((decimal)bid["amount"], 2), ((decimal)bid["amount2"])));
+            Response.AddField("Bid", string.Format("Price: {0} BTC, Amount: {1} PLE, Total: {2} BTC", ((decimal)ask["price"]), Math.Round((decimal)ask["amount"], 2), ((decimal)ask["amount2"])));
                         
             // Send reply
             if (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Channel.Id))
