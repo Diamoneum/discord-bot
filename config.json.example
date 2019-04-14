@@ -31,6 +31,8 @@
   "daemonPort": 44016,
   "walletHost": "127.0.0.1",
   "walletPort": 8070,
-  "walletRpcPassword": "12345",
-  "walletUpdateDelay": 500
+  "walletRpcPassword": "1234",
+  "walletUpdateDelay": 500,
+  "pools" "",
+  "shareDelaySeconds" : 30
 }

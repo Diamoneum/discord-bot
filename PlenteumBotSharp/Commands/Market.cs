@@ -2,6 +2,8 @@
 using Discord.Commands;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PlenteumBot
@@ -23,11 +25,11 @@ namespace PlenteumBot
             var Response = new EmbedBuilder();
             Response.WithTitle("Current Price of PLE: " + PlenteumBot.marketSource);
             Response.WithUrl(PlenteumBot.marketEndpoint);
-            Response.AddInlineField("Low", string.Format("{0} BTC", Math.Round((decimal)CoinPrice["low"])));
-            Response.AddInlineField("Ask", string.Format("{0} BTC", Math.Round((decimal)CoinPrice["ask"])));
-            Response.AddInlineField("Bid", string.Format("{0} BTC", Math.Round((decimal)CoinPrice["bid"])));
-            Response.AddInlineField("High", string.Format("{0} BTC", Math.Round((decimal)CoinPrice["high"])));
-            Response.AddInlineField("Volume", string.Format("{0:N} BTC", (decimal)CoinPrice["volume"]));
+            Response.AddField("Low", string.Format("{0} PLE", (decimal)CoinPrice["low"]));
+            Response.AddField("Ask", string.Format("{0} PLE", (decimal)CoinPrice["ask"]));
+            Response.AddField("Bid", string.Format("{0} PLE", (decimal)CoinPrice["bid"]));
+            Response.AddField("High", string.Format("{0} PLE", (decimal)CoinPrice["high"]));
+            Response.AddField("Volume", string.Format("{0:N} BTC", (decimal)CoinPrice["volume"]));
 
 
             // Send reply
@@ -84,14 +86,14 @@ namespace PlenteumBot
                 return;
             }
 
-            JObject asks = ((JObject)OrderBook["ask"]);
-            JObject bids = ((JObject)OrderBook["bid"]);
+            JObject ask = ((JArray)OrderBook["ask"]).ToObject<List<JObject>>().FirstOrDefault();
+            JObject bid = ((JArray)OrderBook["bid"]).ToObject<List<JObject>>().FirstOrDefault();
 
             // Begin building a response
             var Response = new EmbedBuilder();
             Response.WithTitle("Current PLE Order Book ");
-            Response.AddInlineField("Ask", string.Format("Price: {0} PLE    Amount: {1} PLE   Total: {2} BTC", Math.Round((decimal)bids[0]["price"]), Math.Round((decimal)bids[0]["amount"]), Math.Round((decimal)bids[0]["amount2"])));
-            Response.AddInlineField("Bid", string.Format("Price: {0} PLE    Amount: {1} PLE   Total: {2} BTC", Math.Round((decimal)asks[0]["price"]), Math.Round((decimal)asks[0]["amount"]), Math.Round((decimal)asks[0]["amount2"])));
+            Response.AddField("Ask", string.Format("Price: {0} PLE    Amount: {1} PLE   Total: {2} BTC", ((decimal)bid["price"]), ((decimal)bid["amount"]), ((decimal)bid["amount2"])));
+            Response.AddField("Bid", string.Format("Price: {0} PLE    Amount: {1} PLE   Total: {2} BTC", ((decimal)ask["price"]), ((decimal)ask["amount"]), ((decimal)ask["amount2"])));
                         
             // Send reply
             if (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Channel.Id))
