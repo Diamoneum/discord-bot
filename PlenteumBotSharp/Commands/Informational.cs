@@ -92,19 +92,19 @@ namespace PlenteumBot
                     "(default) or redirected into your tip jar balance");
             }
 
-            else if (Remainder.ToLower() == "price" && (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Guild.Id)))
+            else if (Remainder.ToLower() == "price" && (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Channel.Id)) || Context.IsPrivate)
             {
                 Response.Title += string.Format(" - {0}price", PlenteumBot.botPrefix);
                 Response.AddField("Usage:", string.Format("{0}price", PlenteumBot.botPrefix));
                 Response.AddField("Description:", string.Format("Gives the current prices of {0} in BTC from STEX", PlenteumBot.coinSymbol));
             }
-            else if (Remainder.ToLower() == "mcap" && (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Guild.Id)))
+            else if (Remainder.ToLower() == "mcap" && (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Channel.Id)) || Context.IsPrivate)
             {
                 Response.Title += string.Format(" - {0}mcap", PlenteumBot.botPrefix);
                 Response.AddField("Usage:", string.Format("{0}mcap", PlenteumBot.botPrefix));
                 Response.AddField("Description:", string.Format("Gives {0}'s current market capitalization", PlenteumBot.coinSymbol));
             }
-            else if (Remainder.ToLower() == "book" && (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Guild.Id)))
+            else if (Remainder.ToLower() == "book" && (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Channel.Id)) || Context.IsPrivate)
             {
                 Response.Title += string.Format(" - {0}book", PlenteumBot.botPrefix);
                 Response.AddField("Usage:", string.Format("{0}book", PlenteumBot.botPrefix));
@@ -136,7 +136,7 @@ namespace PlenteumBot
                 Output += "  difficulty\tGives current network difficulty\n";
                 Output += "  height\tGives current network height\n";
                 Output += "  supply\tGives current circulating supply\n";
-                if (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Guild.Id))
+                if (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Channel.Id) || Context.IsPrivate)
                 {
                     Output += "Market:\n";
                     Output += "  price\tGives current price in BTC\n";
