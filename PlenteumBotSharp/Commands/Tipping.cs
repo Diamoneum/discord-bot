@@ -309,129 +309,129 @@ namespace PlenteumBot
             decimal tipAmount = 0;
             //check if "here" or "everyone" is mentioned
             bool multiUser = false;
-            bool hasEveryone = false;
-            bool hasHere = false;
-            if (string.IsNullOrEmpty(Address) && (Context.Message.Tags.Count > 0 || Context.Message.MentionedRoles.Count > 0))
-            {
-                //first ensure we have all members downloaded
-                if (!Context.Guild.HasAllMembers)
-                    await Context.Guild.DownloadUsersAsync();
+            //bool hasEveryone = false;
+            //bool hasHere = false;
+            //if (string.IsNullOrEmpty(Address) && (Context.Message.Tags.Count > 0 || Context.Message.MentionedRoles.Count > 0))
+            //{
+            //    //first ensure we have all members downloaded
+            //    if (!Context.Guild.HasAllMembers)
+            //        await Context.Guild.DownloadUsersAsync();
 
-                foreach (var tag in Context.Message.Tags)
-                {
-                    if (tag.Type == TagType.EveryoneMention)
-                    {
-                        //add each member to the tip
-                        foreach (var user in Context.Guild.Users)
-                        {
-                            if (!Users.Contains(user.Id) && !user.IsBot && !user.IsWebhook) //only add if they not already in the list of users
-                                Users.Add(user.Id);
-                        }
-                        hasEveryone = true;
+            //    foreach (var tag in Context.Message.Tags)
+            //    {
+            //        if (tag.Type == TagType.EveryoneMention)
+            //        {
+            //            //add each member to the tip
+            //            foreach (var user in Context.Guild.Users)
+            //            {
+            //                if (!Users.Contains(user.Id) && !user.IsBot && !user.IsWebhook) //only add if they not already in the list of users
+            //                    Users.Add(user.Id);
+            //            }
+            //            hasEveryone = true;
 
-                    }
-                    else if (tag.Type == TagType.HereMention)
-                    {
-                        foreach (var user in Context.Guild.Users)
-                        {
-                            //only add if they not already in the list of users & are Online or Idle or AFK
-                            if (!Users.Contains(user.Id) && !user.IsBot && !user.IsWebhook && (user.Status == UserStatus.Online || user.Status == UserStatus.Idle || user.Status == UserStatus.AFK))
-                                Users.Add(user.Id);
-                        }
-                        hasHere = true;
-                    }
-                    else if (tag.Type == TagType.RoleMention)
-                    {
-                        foreach (var role in Context.Message.MentionedRoles)
-                        {
-                            foreach (var user in Context.Guild.Users)
-                            {
-                                //only add if they not already in the list of users & are in one of the mentioned roles
-                                if (!Users.Contains(user.Id) && user.Roles.Contains(role) && !user.IsBot && !user.IsWebhook)
-                                    Users.Add(user.Id);
-                            }
-                        }
-                    }
-                }
+            //        }
+            //        else if (tag.Type == TagType.HereMention)
+            //        {
+            //            foreach (var user in Context.Guild.Users)
+            //            {
+            //                //only add if they not already in the list of users & are Online or Idle or AFK
+            //                if (!Users.Contains(user.Id) && !user.IsBot && !user.IsWebhook && (user.Status == UserStatus.Online || user.Status == UserStatus.Idle || user.Status == UserStatus.AFK))
+            //                    Users.Add(user.Id);
+            //            }
+            //            hasHere = true;
+            //        }
+            //        else if (tag.Type == TagType.RoleMention)
+            //        {
+            //            foreach (var role in Context.Message.MentionedRoles)
+            //            {
+            //                foreach (var user in Context.Guild.Users)
+            //                {
+            //                    //only add if they not already in the list of users & are in one of the mentioned roles
+            //                    if (!Users.Contains(user.Id) && user.Roles.Contains(role) && !user.IsBot && !user.IsWebhook)
+            //                        Users.Add(user.Id);
+            //                }
+            //            }
+            //        }
+            //    }
 
-                //get users in Mentioned Roles if there is no "RoleMention" tag and the Users List is empty
-                if (Context.Message.MentionedRoles.Count > 0 && Users.Count == 0)
-                {
-                    foreach (var role in Context.Message.MentionedRoles)
-                    {
-                        foreach (var user in Context.Guild.Users)
-                        {
-                            //only add if they not already in the list of users & are in one of the mentioned roles
-                            if (!Users.Contains(user.Id) && user.Roles.Contains(role))
-                                Users.Add(user.Id);
-                        }
-                    }
-                }
+            //    //get users in Mentioned Roles if there is no "RoleMention" tag and the Users List is empty
+            //    if (Context.Message.MentionedRoles.Count > 0 && Users.Count == 0)
+            //    {
+            //        foreach (var role in Context.Message.MentionedRoles)
+            //        {
+            //            foreach (var user in Context.Guild.Users)
+            //            {
+            //                //only add if they not already in the list of users & are in one of the mentioned roles
+            //                if (!Users.Contains(user.Id) && user.Roles.Contains(role))
+            //                    Users.Add(user.Id);
+            //            }
+            //        }
+            //    }
 
-                //check if everyone or here is mentioned by a tipper who is not allowed to mention @everyone or @here
-                //first ensure we have all members downloaded
-                if (Users.Count <= 0)
-                {
-                    if (!Context.Guild.HasAllMembers)
-                        await Context.Guild.DownloadUsersAsync();
+            //    //check if everyone or here is mentioned by a tipper who is not allowed to mention @everyone or @here
+            //    //first ensure we have all members downloaded
+            //    if (Users.Count <= 0)
+            //    {
+            //        if (!Context.Guild.HasAllMembers)
+            //            await Context.Guild.DownloadUsersAsync();
 
-                    if (Remainder.ToLower().IndexOf("@everyone") > -1 && !hasEveryone)
-                    {
-                        //everyone was mentioned by a tipper who does not have permission to mention everyone
-                        //so, discord will prevent notifying everyone, but the tip should still be sent
-                        foreach (var user in Context.Guild.Users)
-                        {
-                            if (!Users.Contains(user.Id) && !user.IsBot && !user.IsWebhook) //only add if they not already in the list of users
-                                Users.Add(user.Id);
-                        }
-                    }
+            //        if (Remainder.ToLower().IndexOf("@everyone") > -1 && !hasEveryone)
+            //        {
+            //            //everyone was mentioned by a tipper who does not have permission to mention everyone
+            //            //so, discord will prevent notifying everyone, but the tip should still be sent
+            //            foreach (var user in Context.Guild.Users)
+            //            {
+            //                if (!Users.Contains(user.Id) && !user.IsBot && !user.IsWebhook) //only add if they not already in the list of users
+            //                    Users.Add(user.Id);
+            //            }
+            //        }
 
-                    if (Remainder.ToLower().IndexOf("@here") > -1 && !hasHere)
-                    {
-                        //everyone was mentioned by a tipper who does not have permission to mention @here
-                        //so, discord will prevent notifying @here, but the tip should still be sent
-                        foreach (var user in Context.Guild.Users)
-                        {
-                            //only add if they not already in the list of users & are Online or Idle or AFK
-                            if (!Users.Contains(user.Id) && !user.IsBot && !user.IsWebhook && (user.Status == UserStatus.Online || user.Status == UserStatus.Idle || user.Status == UserStatus.AFK))
-                                Users.Add(user.Id);
-                        }
-                    }
-                }
+            //        if (Remainder.ToLower().IndexOf("@here") > -1 && !hasHere)
+            //        {
+            //            //everyone was mentioned by a tipper who does not have permission to mention @here
+            //            //so, discord will prevent notifying @here, but the tip should still be sent
+            //            foreach (var user in Context.Guild.Users)
+            //            {
+            //                //only add if they not already in the list of users & are Online or Idle or AFK
+            //                if (!Users.Contains(user.Id) && !user.IsBot && !user.IsWebhook && (user.Status == UserStatus.Online || user.Status == UserStatus.Idle || user.Status == UserStatus.AFK))
+            //                    Users.Add(user.Id);
+            //            }
+            //        }
+            //    }
 
-                //check there are now users to tip
-                if (Users.Count <= 0)
-                {
-                    await Context.Message.Author.SendMessageAsync(string.Format("There were no users found with the mentioned role!", PlenteumBot.botPrefix));
-                    await Context.Message.AddReactionAsync(new Emoji(PlenteumBot.tipFailedReact));
-                    return;
-                }
-                else
-                {
-                    //we're tipping users that do or don't have a wallet
-                    multiUser = true;
-                }
-                //divide the tip Amount by the number of users
-                tipAmount = Convert.ToDecimal(Amount) / Users.Count;
+            //    //check there are now users to tip
+            //    if (Users.Count <= 0)
+            //    {
+            //        await Context.Message.Author.SendMessageAsync(string.Format("There were no users found with the mentioned role!", PlenteumBot.botPrefix));
+            //        await Context.Message.AddReactionAsync(new Emoji(PlenteumBot.tipFailedReact));
+            //        return;
+            //    }
+            //    else
+            //    {
+            //        //we're tipping users that do or don't have a wallet
+            //        multiUser = true;
+            //    }
+            //    //divide the tip Amount by the number of users
+            //    tipAmount = Convert.ToDecimal(Amount) / Users.Count;
                 
-                //ensure round down and limit to two decimal places... 
-                tipAmount = Math.Floor(tipAmount * 100) / 100; 
-                //check that the splitAmount is LESS than or equal to the specified amount.. 
-                if (tipAmount * Users.Count > Convert.ToDecimal(Amount))
-                {
-                    await Context.Message.Author.SendMessageAsync(string.Format("Something went wrong! The total tip amount is greater than the specified tip amount", PlenteumBot.botPrefix));
-                    await Context.Message.AddReactionAsync(new Emoji(PlenteumBot.tipFailedReact));
-                    return;
-                }
+            //    //ensure round down and limit to two decimal places... 
+            //    tipAmount = Math.Floor(tipAmount * 100) / 100; 
+            //    //check that the splitAmount is LESS than or equal to the specified amount.. 
+            //    if (tipAmount * Users.Count > Convert.ToDecimal(Amount))
+            //    {
+            //        await Context.Message.Author.SendMessageAsync(string.Format("Something went wrong! The total tip amount is greater than the specified tip amount", PlenteumBot.botPrefix));
+            //        await Context.Message.AddReactionAsync(new Emoji(PlenteumBot.tipFailedReact));
+            //        return;
+            //    }
 
-                if (tipAmount < PlenteumBot.Minimum)
-                {
-                    await Context.Message.Author.SendMessageAsync(string.Format("The amount you've specified would result in the individual tip amounts being less than the minimum tip amount!", PlenteumBot.botPrefix));
-                    await Context.Message.AddReactionAsync(new Emoji(PlenteumBot.tipFailedReact));
-                    return;
-                }
+            //    if (tipAmount < PlenteumBot.Minimum)
+            //    {
+            //        await Context.Message.Author.SendMessageAsync(string.Format("The amount you've specified would result in the individual tip amounts being less than the minimum tip amount!", PlenteumBot.botPrefix));
+            //        await Context.Message.AddReactionAsync(new Emoji(PlenteumBot.tipFailedReact));
+            //        return;
+            //    }
 
-            }
+            //}
             // Check that there is at least one mentioned user
             if (Address == "" && Context.Message.MentionedUsers.Count < 1 && !multiUser) return;
 

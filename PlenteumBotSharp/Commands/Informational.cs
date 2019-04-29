@@ -79,9 +79,9 @@ namespace PlenteumBot
             else if (Remainder.ToLower() == "tip")
             {
                 Response.Title += string.Format(" - {0}tip", PlenteumBot.botPrefix);
-                Response.AddField("Usage:", string.Format("{0}tip <Amount of {1}> @Users1 @User2...\n{0}tip <Amount of {1}> <{1} Address>\n{0}tip <Amount of {1}> @role", 
+                Response.AddField("Usage:", string.Format("{0}tip <Amount of {1}> @Users1 @User2...\n{0}tip <Amount of {1}> <{1} Address>", //\n{0}tip <Amount of {1}> @role", 
                     PlenteumBot.botPrefix, PlenteumBot.coinSymbol));
-                Response.AddField("Description:", string.Format("Sends a tip of a specified amount to one or more users\n*or* a specified {0} address\n*or* all users in the mentioned role\n**note**:tip amount sent to individuals will = specified amount / number of users", 
+                Response.AddField("Description:", string.Format("Sends a tip of a specified amount to one or more users\n*or* a specified {0} address", //\n*or* all users in the mentioned role\n**note**:tip amount sent to individuals will = specified amount / number of users", 
                     PlenteumBot.coinSymbol));
             }
             else if (Remainder.ToLower() == "redirecttips")
