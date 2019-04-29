@@ -77,7 +77,7 @@ namespace PlenteumBot
                         _client.GetUser(Sender).Username, TransactionHash);
 
                     // Send message
-                    _client.GetUser(UID).SendMessageAsync("", false, ReplyEmbed);
+                    _client.GetUser(UID).SendMessageAsync("", false, ReplyEmbed.Build());
                 }
 
                 // Begin building a message
@@ -86,11 +86,11 @@ namespace PlenteumBot
                 if (Recipients.Count == 1)
                     Response.Description = string.Format("You sent a tip of **{0:N}** {1} to 1 user\nNew balance: **{2:N}** {1}\nTX: **{3}**",
                         Amount, coinSymbol, Balance, TransactionHash);
-                else Response.Description = string.Format("You sent a tip of **{0:N}** {1} to {2} users\nNew balance: **{3:N}** {1}\nTX: **{4}**",
-                        Amount, coinSymbol, Recipients.Count, Balance, TransactionHash);
+                else Response.Description = string.Format("You sent a tip of **{0:N}** {1} to {2} users\nThe total amount of tips sent was **{5:N}** {1}\nNew balance: **{3:N}** {1}\nTX: **{4}**",
+                        Amount, coinSymbol, Recipients.Count, Balance, TransactionHash, TotalAmount);
 
                 // Send message
-                _client.GetUser(Sender).SendMessageAsync("", false, Response);
+                _client.GetUser(Sender).SendMessageAsync("", false, Response.Build());
 
                 // Update global stats
                 ulong ServerId = 0;
@@ -149,7 +149,7 @@ namespace PlenteumBot
                 }
 
                 // Send message
-                _client.GetUser(Sender).SendMessageAsync("", false, Response);
+                _client.GetUser(Sender).SendMessageAsync("", false, Response.Build());
 
                 // Return as successful
                 return true;
@@ -344,7 +344,7 @@ namespace PlenteumBot
                                     Difference, coinSymbol, Balance, ConfirmedTransaction.Key);
 
                                 // Send message
-                                try { await _client.GetUser(GetUserId(PaymentId)).SendMessageAsync("", false, Response); }
+                                try { await _client.GetUser(GetUserId(PaymentId)).SendMessageAsync("", false, Response.Build()); }
                                 catch { }
 
                                 // Update global stats
@@ -387,7 +387,7 @@ namespace PlenteumBot
                                     Pending, coinSymbol, Balance + Pending, ConfirmedTransaction.Key);
 
                                 // Send message
-                                try { await _client.GetUser(GetUserId(PID)).SendMessageAsync("", false, Response); }
+                                try { await _client.GetUser(GetUserId(PID)).SendMessageAsync("", false, Response.Build()); }
                                 catch { }
 
                                 // Update global stats

@@ -25,11 +25,11 @@ namespace PlenteumBot
             var Response = new EmbedBuilder();
             Response.WithTitle("Current Price of PLE on " + PlenteumBot.marketSource);
             Response.WithUrl(PlenteumBot.marketEndpoint);
-            Response.AddField("Low", string.Format("{0} BTC", (decimal)CoinPrice["low"]));
-            Response.AddField("Ask", string.Format("{0} BTC", (decimal)CoinPrice["ask"]));
-            Response.AddField("Bid", string.Format("{0} BTC", (decimal)CoinPrice["bid"]));
-            Response.AddField("High", string.Format("{0} BTC", (decimal)CoinPrice["high"]));
-            Response.AddField("Volume", string.Format("{0:N} BTC", (decimal)CoinPrice["volume"]));
+            Response.Description += string.Format("```Low:     {0} BTC\n", (decimal)CoinPrice["low"]);
+            Response.Description += string.Format("Ask:     {0} BTC\n", (decimal)CoinPrice["ask"]);
+            Response.Description += string.Format("Bid:     {0} BTC\n", (decimal)CoinPrice["bid"]);
+            Response.Description += string.Format("High:    {0} BTC\n", (decimal)CoinPrice["high"]);
+            Response.Description += string.Format("Volume:  {0:N} BTC\n```", (decimal)CoinPrice["volume"]);
 
 
             // Send reply
@@ -37,9 +37,9 @@ namespace PlenteumBot
             {
                 try { await Context.Message.DeleteAsync(); }
                 catch { }
-                await ReplyAsync("", false, Response);
+                await ReplyAsync("", false, Response.Build());
             }
-            else await Context.Message.Author.SendMessageAsync("", false, Response);
+            else await Context.Message.Author.SendMessageAsync("", false, Response.Build());
         }
 
         [Command("mcap")]
@@ -93,17 +93,17 @@ namespace PlenteumBot
             var Response = new EmbedBuilder();
             Response.WithTitle("Current Order Book of PLE on " + PlenteumBot.marketSource);
             Response.WithUrl(PlenteumBot.bookEndpoint);
-            Response.AddField("Ask", string.Format("Price: {0} BTC, Amount: {1} PLE, Total: {2} BTC", ((decimal)bid["price"]), Math.Round((decimal)bid["amount"], 2), ((decimal)bid["amount2"])));
-            Response.AddField("Bid", string.Format("Price: {0} BTC, Amount: {1} PLE, Total: {2} BTC", ((decimal)ask["price"]), Math.Round((decimal)ask["amount"], 2), ((decimal)ask["amount2"])));
+            Response.AddField("Ask", string.Format("```Price:    {0} BTC\nAmount:   {1} PLE\nTotal:    {2} BTC```", ((decimal)bid["price"]), Math.Round((decimal)bid["amount"], 2), ((decimal)bid["amount2"])));
+            Response.AddField("Bid", string.Format("```Price:    {0} BTC\nAmount:   {1} PLE\nTotal:    {2} BTC```", ((decimal)ask["price"]), Math.Round((decimal)ask["amount"], 2), ((decimal)ask["amount2"])));
                         
             // Send reply
             if (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Channel.Id))
             {
                 try { await Context.Message.DeleteAsync(); }
                 catch { }
-                await ReplyAsync("", false, Response);
+                await ReplyAsync("", false, Response.Build());
             }
-            else await Context.Message.Author.SendMessageAsync("", false, Response);
+            else await Context.Message.Author.SendMessageAsync("", false, Response.Build());
         }
     }
 }

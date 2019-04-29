@@ -70,7 +70,7 @@ namespace PlenteumBot
             marketEndpoint = "https://api3.stex.com/public/ticker/864",
             bookEndpoint = "https://api3.stex.com/public/orderbook/864",
             marketBTCEndpoint = "https://www.bitstamp.net/api/ticker/";
-
+        
         // Daemon Variables
         public static string
             daemonHost = "127.0.0.1";
@@ -84,13 +84,6 @@ namespace PlenteumBot
         public static int
             walletPort = 8070,
             walletUpdateDelay = 5000;
-        
-        //mining incentive competition
-        public static string
-            pools = "https://ple.optimusblue.com:8119/stats_address?address={0}&longpoll=false,"; //comma seperated list of participating pools in the promo
-
-        public static int
-            shareDelaySeconds = 60000 * 15; //15 minutes 
-
     }
+
 }

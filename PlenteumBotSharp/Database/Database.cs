@@ -46,9 +46,6 @@ namespace PlenteumBot
             SqliteCommand CompTableCreationCommand = new SqliteCommand("CREATE TABLE IF NOT EXISTS comp (lastdat TIMESTAMP, winner INT, amount BIGINT)", Database);
             CompTableCreationCommand.ExecuteNonQuery();
 
-            SqliteCommand CompEntrantsTableCreationCommand = new SqliteCommand("CREATE TABLE IF NOT EXISTS compentrants (uid INT, address TEXT, createdat TIMESTAMP)", Database);
-            CompEntrantsTableCreationCommand.ExecuteNonQuery();
-
             // Completed
             return Task.CompletedTask;
         }

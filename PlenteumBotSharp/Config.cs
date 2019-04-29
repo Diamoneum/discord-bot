@@ -45,9 +45,6 @@ namespace PlenteumBot
                 walletPort = (int)Config["walletPort"];
                 walletRpcPassword = (string)Config["walletRpcPassword"];
                 walletUpdateDelay = (int)Config["walletUpdateDelay"];
-                //mining incentive competition
-                pools = (string)Config["pools"];
-                shareDelaySeconds = (int)Config["shareDelaySeconds"];
 
             }
         }
@@ -76,17 +73,17 @@ namespace PlenteumBot
                 //["faucetHost"] = faucetHost,
                 //["faucetEndpoint"] = faucetEndpoint,
                 //["faucetAddress"] = faucetAddress,
-                //["marketSource"] = marketSource,
-                //["marketEndpoint"] = marketEndpoint,
-                //["marketBTCEndpoint"] = marketBTCEndpoint,
-                //["marketDisallowedServers"] = JToken.FromObject(marketDisallowedServers),
+                ["marketSource"] = marketSource,
+                ["marketEndpoint"] = marketEndpoint,
+                ["marketBTCEndpoint"] = marketBTCEndpoint,
+                ["marketAllowedChannels"] = JToken.FromObject(marketAllowedChannels),
                 ["daemonHost"] = daemonHost,
                 ["daemonPort"] = daemonPort,
                 ["walletHost"] = walletHost,
                 ["walletPort"] = walletPort,
                 ["walletRpcPassword"] = walletRpcPassword,
-                ["walletUpdateDelay"] = walletUpdateDelay
-            };
+                ["walletUpdateDelay"] = walletUpdateDelay,
+        };
 
             // Flush to file
             File.WriteAllText(configFile, Config.ToString());

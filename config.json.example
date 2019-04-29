@@ -32,7 +32,5 @@
   "walletHost": "127.0.0.1",
   "walletPort": 8070,
   "walletRpcPassword": "1234",
-  "walletUpdateDelay": 500,
-  "pools" "",
-  "shareDelaySeconds" : 30
+  "walletUpdateDelay": 500
 }

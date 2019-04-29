@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using System.Collections.Generic;
 
 namespace PlenteumBot
 {
@@ -219,23 +220,32 @@ namespace PlenteumBot
         }
 
         #region Mining Competion
-        public static string RegisterEntrant(ulong UID, string Address)
+        public static List<long> GetRandomUsers()
         {
-            // Generate a new payment ID
-            string PaymentId = GeneratePaymentId(Address);
-
+            List<long> users = new List<long>();
             // Create Sql command
-            SqliteCommand Command = new SqliteCommand("INSERT INTO compentrants (uid) VALUES (@uid)", Database);
-            Command.Parameters.AddWithValue("uid", UID);
-            Command.Parameters.AddWithValue("address", Address);
-            Command.Parameters.AddWithValue("paymentid", PaymentId.ToUpper());
+            SqliteCommand Command = new SqliteCommand("SELECT uid FROM users WHERE uid NOT IN (select winner from comp where lastdat <= date('now','-5 day')) ORDER BY random() LIMIT 25", Database);
 
             // Execute command
-            Command.ExecuteNonQuery();
+            using (SqliteDataReader Reader = Command.ExecuteReader())
+                while (Reader.Read())
+                {
+                    users.Add(Reader.GetInt64(0));
+                }
 
-            // Return generated payment ID
-            return PaymentId;
+            //didn't find anyone, try again with winners in the last 1 day
+            Command = new SqliteCommand("SELECT uid FROM users WHERE uid NOT IN (select winner from comp where lastdat <= date('now','-1 day')) ORDER BY random() LIMIT 25", Database);
+
+            // Execute command
+            using (SqliteDataReader Reader = Command.ExecuteReader())
+                while (Reader.Read())
+                    users.Add(Reader.GetInt64(0));
+
+            // return the list of random 25 users who have not recently won
+            return users;
         }
+
+
         #endregion
 
     }

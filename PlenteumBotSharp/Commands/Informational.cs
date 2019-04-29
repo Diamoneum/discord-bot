@@ -79,9 +79,9 @@ namespace PlenteumBot
             else if (Remainder.ToLower() == "tip")
             {
                 Response.Title += string.Format(" - {0}tip", PlenteumBot.botPrefix);
-                Response.AddField("Usage:", string.Format("{0}tip <Amount of {1}> @Users1 @User2...\n{0}tip <Amount of {1}> <{1} Address>", 
+                Response.AddField("Usage:", string.Format("{0}tip <Amount of {1}> @Users1 @User2...\n{0}tip <Amount of {1}> <{1} Address>\n{0}tip <Amount of {1}> @role", 
                     PlenteumBot.botPrefix, PlenteumBot.coinSymbol));
-                Response.AddField("Description:", string.Format("Sends a tip of a specified amount to one or more users *or* a specified {0} address", 
+                Response.AddField("Description:", string.Format("Sends a tip of a specified amount to one or more users\n*or* a specified {0} address\n*or* all users in the mentioned role\n**note**:tip amount sent to individuals will = specified amount / number of users", 
                     PlenteumBot.coinSymbol));
             }
             else if (Remainder.ToLower() == "redirecttips")
@@ -111,60 +111,53 @@ namespace PlenteumBot
                 Response.AddField("Description:", string.Format("Gives {0}'s current order book on STEX", PlenteumBot.coinSymbol));
             }
             //competition related commands
-            else if (Remainder.ToLower() == "enterpromo")
-            {
-                Response.Title += string.Format(" - {0}enterpromo", PlenteumBot.botPrefix);
-                Response.AddField("Usage:", string.Format("{0}enterpromo <{1} Address>", PlenteumBot.botPrefix, PlenteumBot.coinSymbol));
-                Response.AddField("Description:", "Registers your address with the bot so you are eligable to win...");
-            }
-            else if (Remainder.ToLower() == "promopools")
-            {
-                Response.Title += string.Format(" - {0}promopools", PlenteumBot.botPrefix);
-                Response.AddField("Usage:", string.Format("{0}promopools", PlenteumBot.botPrefix));
-                Response.AddField("Description:", "Displays a list of pools participating in the current promo");
-            }
+            //else if (Remainder.ToLower() == "pools")
+            //{
+            //    Response.Title += string.Format(" - {0}pools", PlenteumBot.botPrefix);
+            //    Response.AddField("Usage:", string.Format("{0}pools", PlenteumBot.botPrefix));
+            //    Response.AddField("Description:", "Displays a list of pools participating in the current mining promotion");
+            //}
+            //else if (Remainder.ToLower() == "winners")
+            //{
+            //    Response.Title += string.Format(" - {0}winners", PlenteumBot.botPrefix);
+            //    Response.AddField("Usage:", string.Format("{0}winners", PlenteumBot.botPrefix));
+            //    Response.AddField("Description:", "Displays a list of recent mining promotion winners");
+            //}
 
 
             // No requested command
             else
             {
-                Output += "Informational:\n";
-                Output += "  help\tLists all available commands\n";
+                Output += "__**Informational**__:\n";
+                Output += "  **{0}help**:  Lists all available commands\n";
                 //Output += "  faucet\tGives faucet information\n";
-                Output += "Network:\n";
-                Output += "  hashrate\tGives current network hashrate\n";
-                Output += "  difficulty\tGives current network difficulty\n";
-                Output += "  height\tGives current network height\n";
-                Output += "  supply\tGives current circulating supply\n";
+                Output += "__**Network**__:\n";
+                Output += "  **{0}hashrate**:  Gives current network hashrate\n";
+                Output += "  **{0}difficulty**:  Gives current network difficulty\n";
+                Output += "  **{0}height**:  Gives current network height\n";
+                Output += "  **{0}supply**:  Gives current circulating supply\n";
                 if (Context.Channel != null && PlenteumBot.marketAllowedChannels.Contains(Context.Channel.Id) || (Context.IsPrivate))
                 {
-                    Output += "Market:\n";
-                    Output += "  price\tGives current price in BTC\n";
-                    Output += "  book\tGives current order book\n";
-                    Output += "  mcap\tGives current global marketcap\n";
+                    Output += "__**Market**__:\n";
+                    Output += "  **{0}price**:  Gives current price in BTC\n";
+                    Output += "  **{0}book**:  Gives current order book\n";
+                    Output += "  **{0}mcap**:  Gives current global marketcap\n";
                 }
-                Output += "Tipping:\n";
-                Output += "  registerwallet\tRegisters your wallet with the tip bot\n";
-                Output += "  updatewallet\tUpdates your registered wallet\n";
-                Output += "  wallet\tGives the wallet address for a specified user or your own address if no user is specified\n";
-                Output += "  deposit\tGives information on how to deposit into your tipping balance\n";
-                Output += "  withdraw\tWithdraws a specified amount from your tip jar into your registered wallet\n";
-                Output += "  balance\tGives your current tip jar balance\n";
-                Output += "  tip\tTips one or more users a specified amount\n";
-                Output += "  redirecttips\tSets whether you'd like tips sent directly to your wallet or redirected back into your tip jar";
-                //promotional items
-                Output += "Mining Promo:\n";
-                Output += "  enter\tRegisters your wallet for the mining promotion\n";
-                Output += "  pools\tLists the pools participating in the mining promotion\n";
-                Output += "  winners\tLists todays winners in the mining promotion.\n";
-                Output = string.Format("```" + PlenteumBot.Prettify(Output) + "```**Note:** You can use *{0}help <Name of Command>* for " +
-                    "additional help with any command", PlenteumBot.botPrefix);
-                Response.WithDescription(Output);
+                Output += "__**Tipping**__:\n";
+                Output += "  **{0}registerwallet**:  Registers your wallet with the tip bot\n";
+                Output += "  **{0}updatewallet**:  Updates your registered wallet\n";
+                Output += "  **{0}wallet**:  Gives the wallet address for a specified user or your own address if no user is specified\n";
+                Output += "  **{0}deposit**:  Gives information on how to deposit into your tipping balance\n";
+                Output += "  **{0}withdraw**:  Withdraws a specified amount from your tip jar into your registered wallet\n";
+                Output += "  **{0}balance**:  Gives your current tip jar balance\n";
+                Output += "  **{0}tip**:  Tips one or more users a specified amount\n";
+                Output += "  **{0}redirecttips**:  Sets whether you'd like tips sent directly to your wallet or redirected back into your tip jar";
+                Response.WithDescription(string.Format(Output, PlenteumBot.botPrefix));
                 Response.WithTitle("Available Commands:");
             }
 
             // Send reply
-            await ReplyAsync("", false, Response);
+            await ReplyAsync("", false, Response.Build());
         }
 
         //[Command("faucet")]
