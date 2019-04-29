@@ -10,8 +10,12 @@ using System.Linq;
 
 namespace PlenteumBot
 {
+
     partial class PlenteumBot
     {
+
+        private static TimerService _timerService;
+
         // Initialization
         public static void Main(string[] args)
         {
@@ -62,6 +66,9 @@ namespace PlenteumBot
             Log(0, "PlenteumBot", "Setting default address");
             await SetAddress();
 
+            Log(0, "PlenteumBot", "Starting Timer service");
+            _timerService = new TimerService(_client);
+            _timerService.Start();
             // Rest until a disconnect is detected
             Disconnected = false;
             while (!Disconnected) { }
@@ -77,6 +84,7 @@ namespace PlenteumBot
                 BeginMonitoring();
                 Monitoring = true;
             }
+            //
             return Task.CompletedTask;
         }
 
@@ -141,52 +149,52 @@ namespace PlenteumBot
             else Emote = Reaction.Emote.ToString();
 
             // Check if reaction is a join reaction
-            if (Emote == tipJoinReact)
-            {
-                // Check if message is a tip message
-                if (!Message.Content.StartsWith(botPrefix + "tip")) return;
+            //if (Emote == tipJoinReact)
+            //{
+            //    // Check if message is a tip message
+            //    if (!Message.Content.StartsWith(botPrefix + "tip")) return;
 
-                // Check tip amount
-                decimal Amount = Convert.ToDecimal(Message.Content.Split(' ')[1]);
-                if (Amount * coinUnits < tipFee) return;
+            //    // Check tip amount
+            //    decimal Amount = Convert.ToDecimal(Message.Content.Split(' ')[1]);
+            //    if (Amount * coinUnits < tipFee) return;
 
-                // Check if user exists in user table
-                if (!CheckUserExists(Reaction.UserId))
-                {
-                    await Reaction.User.Value.SendMessageAsync(string.Format("You must register a wallet before you can tip! Use {0}help if you need any help.", botPrefix));
-                    return;
-                }
+            //    // Check if user exists in user table
+            //    if (!CheckUserExists(Reaction.UserId))
+            //    {
+            //        await Reaction.User.Value.SendMessageAsync(string.Format("You must register a wallet before you can tip! Use {0}help if you need any help.", botPrefix));
+            //        return;
+            //    }
 
-                // Remove duplicate mentions
-                List<ulong> Users = new List<ulong>();
-                foreach (ulong User in Message.MentionedUserIds)
-                    if (User != Reaction.UserId) Users.Add(User);
-                Users = Users.Distinct().ToList();
+            //    // Remove duplicate mentions
+            //    List<ulong> Users = new List<ulong>();
+            //    foreach (ulong User in Message.MentionedUserIds)
+            //        if (User != Reaction.UserId) Users.Add(User);
+            //    Users = Users.Distinct().ToList();
 
-                // Create a list of users that have wallets
-                List<ulong> TippableUsers = new List<ulong>();
-                foreach (ulong Id in Users)
-                {
-                    if (CheckUserExists(Id) && Id != Reaction.UserId)
-                        TippableUsers.Add(Id);
-                }
+            //    // Create a list of users that have wallets
+            //    List<ulong> TippableUsers = new List<ulong>();
+            //    foreach (ulong Id in Users)
+            //    {
+            //        if (CheckUserExists(Id) && Id != Reaction.UserId)
+            //            TippableUsers.Add(Id);
+            //    }
 
-                // Check that there are users to tip
-                if (TippableUsers.Count < 1) return;
+            //    // Check that there are users to tip
+            //    if (TippableUsers.Count < 1) return;
 
-                // Check that user has enough balance for the tip
-                if (GetBalance(Reaction.UserId) < Convert.ToDecimal(Amount) * TippableUsers.Count + tipFee)
-                {
-                    await Reaction.User.Value.SendMessageAsync(string.Format("Your balance is too low! Amount + Fee = **{0:N}** {1}",
-                        Convert.ToDecimal(Amount) * TippableUsers.Count + tipFee, coinSymbol));
-                    await Message.AddReactionAsync(new Emoji(tipLowBalanceReact));
-                    return;
-                }
+            //    // Check that user has enough balance for the tip
+            //    if (GetBalance(Reaction.UserId) < Convert.ToDecimal(Amount) * TippableUsers.Count + tipFee)
+            //    {
+            //        await Reaction.User.Value.SendMessageAsync(string.Format("Your balance is too low! Amount + Fee = **{0:N}** {1}",
+            //            Convert.ToDecimal(Amount) * TippableUsers.Count + tipFee, coinSymbol));
+            //        await Message.AddReactionAsync(new Emoji(tipLowBalanceReact));
+            //        return;
+            //    }
 
-                // Check that there is at least one user with a registered wallet
-                if (Tip(Reaction.UserId, TippableUsers, Convert.ToDecimal(Amount), Message as SocketMessage))
-                    await Message.AddReactionAsync(new Emoji(tipSuccessReact));
-            }
+            //    // Check that there is at least one user with a registered wallet
+            //    if (Tip(Reaction.UserId, TippableUsers, Convert.ToDecimal(Amount), Message as SocketMessage))
+            //        await Message.AddReactionAsync(new Emoji(tipSuccessReact));
+            //}
 
             // Custom reacts
             //else if (tipCustomReacts.ContainsKey(Emote))
