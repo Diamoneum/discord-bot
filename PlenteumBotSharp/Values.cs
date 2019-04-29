@@ -25,9 +25,10 @@ namespace PlenteumBot
         // Permission Variables
         [JsonExtensionData]
         public static List<ulong>
-            marketDisallowedServers = new List<ulong>
+            marketAllowedChannels = new List<ulong>
             {
-                388915017187328002
+                515407608589320192, //PLE Market Talk Channel
+                562944440952684546 //PLE Test
             };
 
         // Bot Variables
@@ -51,7 +52,7 @@ namespace PlenteumBot
         public static decimal
             tipFee = 10;
         public static int
-            tipMixin = 3;
+            tipMixin = 0;
         public static string
             tipDefaultAddress = "",
             tipSuccessReact = "👍",
@@ -63,18 +64,13 @@ namespace PlenteumBot
         public static Dictionary<string, decimal>
             tipCustomReacts = new Dictionary<string, decimal>();
 
-        // Faucet Variables
-        //public static string
-        //    faucetHost = "https://faucet.trtl.me/",
-        //    faucetEndpoint = "https://faucet.trtl.me/balance",
-        //    faucetAddress = "TRTLv14M1Q9223QdWMmJyNeY8oMjXs5TGP9hDc3GJFsUVdXtaemn1mLKA25Hz9PLu89uvDafx9A93jW2i27E5Q3a7rn8P2fLuVA";
-
         // Market Variables
-        //public static string
-        //    marketSource = "TradeOgre",
-        //    marketEndpoint = "https://tradeogre.com/api/v1/ticker/BTC-TRTL",
-        //    marketBTCEndpoint = "https://www.bitstamp.net/api/ticker/";
-
+        public static string
+            marketSource = "STEX",
+            marketEndpoint = "https://api3.stex.com/public/ticker/864",
+            bookEndpoint = "https://api3.stex.com/public/orderbook/864",
+            marketBTCEndpoint = "https://www.bitstamp.net/api/ticker/";
+        
         // Daemon Variables
         public static string
             daemonHost = "127.0.0.1";
@@ -89,4 +85,5 @@ namespace PlenteumBot
             walletPort = 8070,
             walletUpdateDelay = 5000;
     }
+
 }

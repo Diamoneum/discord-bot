@@ -15,6 +15,7 @@ namespace PlenteumBot
         // Initialization
         public static void Main(string[] args)
         {
+            
             // Begin bot process in its own thread
             RunBotAsync();
 
@@ -53,7 +54,7 @@ namespace PlenteumBot
 
             // Register commands and start bot
             Log(0, "PlenteumBot", "Starting discord client");
-            await RegisterCommandsAsync();
+            await RegisterCommandsAsync(_services);
             await _client.LoginAsync(TokenType.Bot, botToken);
             await _client.StartAsync();
 
@@ -80,11 +81,11 @@ namespace PlenteumBot
         }
 
         // Register commands within API
-        private static async Task RegisterCommandsAsync()
+        private static async Task RegisterCommandsAsync(IServiceProvider _services)
         {
             _client.MessageReceived += MessageReceivedAsync;
             _client.ReactionAdded += ReactionAddedAsync;
-            await _commands.AddModulesAsync(Assembly.GetEntryAssembly());
+            await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
         }
 
         // Log event handler
@@ -188,59 +189,59 @@ namespace PlenteumBot
             }
 
             // Custom reacts
-            else if (tipCustomReacts.ContainsKey(Emote))
-            {
-                // Get custom react amount
-                decimal Amount = tipCustomReacts[Emote];
+            //else if (tipCustomReacts.ContainsKey(Emote))
+            //{
+            //    // Get custom react amount
+            //    decimal Amount = tipCustomReacts[Emote];
 
-                // Check if user exists in user table
-                if (!CheckUserExists(Reaction.UserId))
-                {
-                    await Reaction.User.Value.SendMessageAsync(string.Format("You must register a wallet before you can tip! Use {0}help if you need any help.", botPrefix));
-                    return;
-                }
+            //    // Check if user exists in user table
+            //    if (!CheckUserExists(Reaction.UserId))
+            //    {
+            //        await Reaction.User.Value.SendMessageAsync(string.Format("You must register a wallet before you can tip! Use {0}help if you need any help.", botPrefix));
+            //        return;
+            //    }
 
-                // Check if user is trying to tip themself
-                if (Message.Author.Id == Reaction.UserId)
-                    return;
+            //    // Check if user is trying to tip themself
+            //    if (Message.Author.Id == Reaction.UserId)
+            //        return;
 
-                // Check that recipient has registered a wallet
-                if (!CheckUserExists(Message.Author.Id))
-                {
-                    // Add tip failed react
-                    await (Message as SocketUserMessage).AddReactionAsync(new Emoji(tipFailedReact));
+            //    // Check that recipient has registered a wallet
+            //    if (!CheckUserExists(Message.Author.Id))
+            //    {
+            //        // Add tip failed react
+            //        await (Message as SocketUserMessage).AddReactionAsync(new Emoji(tipFailedReact));
 
-                    try
-                    {
-                        // Begin building a response
-                        var Response = new EmbedBuilder();
-                        Response.WithTitle(string.Format("{0} wants to tip you!", _client.GetUser(Reaction.UserId).Username));
-                        Response.Description = string.Format("Register your wallet with with `{0}registerwallet <your {1} address>` " +
-                            "to get started!\nTo create a wallet head to https://wallet.plenteum.com/",
-                            botPrefix, coinSymbol);
+            //        try
+            //        {
+            //            // Begin building a response
+            //            var Response = new EmbedBuilder();
+            //            Response.WithTitle(string.Format("{0} wants to tip you!", _client.GetUser(Reaction.UserId).Username));
+            //            Response.Description = string.Format("Register your wallet with with `{0}registerwallet <your {1} address>` " +
+            //                "to get started!\nTo create a wallet head to https://wallet.plenteum.com/",
+            //                botPrefix, coinSymbol);
 
-                        // Send reply
-                        await Message.Author.SendMessageAsync("", false, Response);
-                    }
-                    catch { }
-                    return;
-                }
+            //            // Send reply
+            //            await Message.Author.SendMessageAsync("", false, Response.Build());
+            //        }
+            //        catch { }
+            //        return;
+            //    }
 
-                // Check that user has enough balance for the tip
-                if (GetBalance(Reaction.UserId) < Amount + tipFee)
-                {
-                    await Reaction.User.Value.SendMessageAsync(string.Format("Your balance is too low! Amount + Fee = **{0:N}** {1}",
-                        Amount + tipFee, coinSymbol));
-                    await Message.AddReactionAsync(new Emoji(tipLowBalanceReact));
-                }
+            //    // Check that user has enough balance for the tip
+            //    if (GetBalance(Reaction.UserId) < Amount + tipFee)
+            //    {
+            //        await Reaction.User.Value.SendMessageAsync(string.Format("Your balance is too low! Amount + Fee = **{0:N}** {1}",
+            //            Amount + tipFee, coinSymbol));
+            //        await Message.AddReactionAsync(new Emoji(tipLowBalanceReact));
+            //    }
 
-                // Tip has required arguments
-                else if (Tip(Reaction.UserId, new List<ulong> { Message.Author.Id }, Amount, Message))
-                {
-                    // Send success react
-                    await Message.AddReactionAsync(new Emoji(tipSuccessReact));
-                }
-            }
+            //    // Tip has required arguments
+            //    else if (Tip(Reaction.UserId, new List<ulong> { Message.Author.Id }, Amount, Message))
+            //    {
+            //        // Send success react
+            //        await Message.AddReactionAsync(new Emoji(tipSuccessReact));
+            //    }
+            //}
         }
     }
 }

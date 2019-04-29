@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using System.Collections.Generic;
 
 namespace PlenteumBot
 {
@@ -9,6 +10,18 @@ namespace PlenteumBot
         {
             // Create Sql command
             SqliteCommand Command = new SqliteCommand("SELECT uid FROM users WHERE uid = @uid", Database);
+            Command.Parameters.AddWithValue("uid", UID);
+
+            // Execute command
+            using (SqliteDataReader Reader = Command.ExecuteReader())
+                if (Reader.HasRows) return true;
+            return false;
+        }
+
+        public static bool CheckUserEntered(ulong UID)
+        {
+            // Create Sql command
+            SqliteCommand Command = new SqliteCommand("SELECT uid FROM compentrants WHERE uid = @uid", Database);
             Command.Parameters.AddWithValue("uid", UID);
 
             // Execute command
@@ -205,5 +218,35 @@ namespace PlenteumBot
             // Execute command
             Command.ExecuteNonQuery();
         }
+
+        #region Mining Competion
+        public static List<long> GetRandomUsers()
+        {
+            List<long> users = new List<long>();
+            // Create Sql command
+            SqliteCommand Command = new SqliteCommand("SELECT uid FROM users WHERE uid NOT IN (select winner from comp where lastdat <= date('now','-5 day')) ORDER BY random() LIMIT 25", Database);
+
+            // Execute command
+            using (SqliteDataReader Reader = Command.ExecuteReader())
+                while (Reader.Read())
+                {
+                    users.Add(Reader.GetInt64(0));
+                }
+
+            //didn't find anyone, try again with winners in the last 1 day
+            Command = new SqliteCommand("SELECT uid FROM users WHERE uid NOT IN (select winner from comp where lastdat <= date('now','-1 day')) ORDER BY random() LIMIT 25", Database);
+
+            // Execute command
+            using (SqliteDataReader Reader = Command.ExecuteReader())
+                while (Reader.Read())
+                    users.Add(Reader.GetInt64(0));
+
+            // return the list of random 25 users who have not recently won
+            return users;
+        }
+
+
+        #endregion
+
     }
 }

@@ -34,16 +34,18 @@ namespace PlenteumBot
                 //faucetHost = (string)Config["faucetHost"];
                 //faucetEndpoint = (string)Config["faucetEndpoint"];
                 //faucetAddress = (string)Config["faucetAddress"];
-                //marketSource = (string)Config["marketSource"];
-                //marketEndpoint = (string)Config["marketEndpoint"];
-                //marketBTCEndpoint = (string)Config["marketBTCEndpoint"];
-                marketDisallowedServers = Config["marketDisallowedServers"].ToObject<List<ulong>>();
+                marketSource = (string)Config["marketSource"];
+                bookEndpoint = (string)Config["bookEndpoint"];
+                marketEndpoint = (string)Config["marketEndpoint"];
+                marketBTCEndpoint = (string)Config["marketBTCEndpoint"];
+                marketAllowedChannels = Config["marketAllowedChannels"].ToObject<List<ulong>>();
                 daemonHost = (string)Config["daemonHost"];
                 daemonPort = (int)Config["daemonPort"];
                 walletHost = (string)Config["walletHost"];
                 walletPort = (int)Config["walletPort"];
                 walletRpcPassword = (string)Config["walletRpcPassword"];
                 walletUpdateDelay = (int)Config["walletUpdateDelay"];
+
             }
         }
 
@@ -71,17 +73,17 @@ namespace PlenteumBot
                 //["faucetHost"] = faucetHost,
                 //["faucetEndpoint"] = faucetEndpoint,
                 //["faucetAddress"] = faucetAddress,
-                //["marketSource"] = marketSource,
-                //["marketEndpoint"] = marketEndpoint,
-                //["marketBTCEndpoint"] = marketBTCEndpoint,
-                //["marketDisallowedServers"] = JToken.FromObject(marketDisallowedServers),
+                ["marketSource"] = marketSource,
+                ["marketEndpoint"] = marketEndpoint,
+                ["marketBTCEndpoint"] = marketBTCEndpoint,
+                ["marketAllowedChannels"] = JToken.FromObject(marketAllowedChannels),
                 ["daemonHost"] = daemonHost,
                 ["daemonPort"] = daemonPort,
                 ["walletHost"] = walletHost,
                 ["walletPort"] = walletPort,
                 ["walletRpcPassword"] = walletRpcPassword,
-                ["walletUpdateDelay"] = walletUpdateDelay
-            };
+                ["walletUpdateDelay"] = walletUpdateDelay,
+        };
 
             // Flush to file
             File.WriteAllText(configFile, Config.ToString());
