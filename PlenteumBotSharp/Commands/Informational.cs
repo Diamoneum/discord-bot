@@ -130,6 +130,7 @@ namespace PlenteumBot
             {
                 Output += "__**Informational**__:\n";
                 Output += "  **{0}help**:  Lists all available commands\n";
+                Output += "  **{0}help <command>**:  Lists information about a specific command\n";
                 //Output += "  faucet\tGives faucet information\n";
                 Output += "__**Network**__:\n";
                 Output += "  **{0}hashrate**:  Gives current network hashrate\n";
@@ -152,8 +153,6 @@ namespace PlenteumBot
                 Output += "  **{0}balance**:  Gives your current tip jar balance\n";
                 Output += "  **{0}tip**:  Tips one or more users a specified amount\n";
                 Output += "  **{0}redirecttips**:  Sets whether you'd like tips sent directly to your wallet or redirected back into your tip jar";
-                Output += "\n\n";
-                Output += "You can also use:\n\n   **{0}help <command>** to get information about a specific command.";
                 Response.WithDescription(string.Format(Output, PlenteumBot.botPrefix));
                 Response.WithTitle("Available Commands:");
             }
